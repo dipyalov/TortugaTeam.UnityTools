@@ -1,0 +1,5 @@
+/*/bin
+*.userprefs
+/*/obj
+*.suo
+*.user

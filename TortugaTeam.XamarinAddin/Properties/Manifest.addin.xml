@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Addin namespace="TortugaTeam.XamarinAddin" id="TortugaTeam.XamarinAddin" name="Tortuga Team Unity Tools" author="Dmitriy Pyalov" copyright="Dmitriy Pyalov (C) 2014" description="Unity helper tools from Tortuga Team" category="Unity" version="1.0">
+	<Dependencies>
+		<Addin id="::MonoDevelop.Core" version="4.0" />
+		<Addin id="::MonoDevelop.Ide" version="4.0" />
+	</Dependencies>
+	<Runtime>
+	</Runtime>
+	<Extension path = "/MonoDevelop/Ide/StartupHandlers">
+		<Class class="TortugaTeam.XamarinAddin.StartupHandler" />
+	</Extension>
+</Addin>
