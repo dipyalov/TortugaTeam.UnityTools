@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
-[assembly: AssemblyTitle ("TortugaTeam.UnityTools")]
+[assembly: AssemblyTitle ("Tortuga Team Unity Xamarin Addin")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("Dmitry")]
+[assembly: AssemblyCopyright ("Dmitriy Pyalov © 2014")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
