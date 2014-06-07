@@ -30,17 +30,21 @@ namespace TortugaTeam.XamarinLauncher
 				int.TryParse(args[1], out line);
 			}
 
+			string solution = null;
 			if (file == null || !File.Exists(file))
 			{				
 				file = FindSolution();
 				line = 0;
-			}			
-			
+			}
+			else if (!file.EndsWith(".sln"))
+			{
+				solution = FindSolution();
+			}
 			if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
 			{					
-				if (!TryExistingXamarin(file, line))
+				if (!TryExistingXamarin(file, line, solution))
 				{
-					RunXamarin(file);
+					RunXamarin(file, line, solution);
 				}
 				return;
 			}
@@ -66,16 +70,23 @@ namespace TortugaTeam.XamarinLauncher
 			return null;
 		}
 
-		private static bool TryExistingXamarin(string path, int line)
+		private static bool TryExistingXamarin(string path, int line, string solution)
 		{							
 			try
 			{				
-				var message = Encode(new Dictionary<string, string>
+				var items = new Dictionary<string, string>
 				{
 					{ "command", "open" },
 					{ "path", path },
 					{ "line", line.ToString() }
-				});
+				};
+				if (solution != null)
+				{
+					items["solution"] = solution;
+				}
+				var message = Encode(items);
+
+
 
 				using (var client = new TcpClient(AddressFamily.InterNetwork))
 				{
@@ -132,17 +143,23 @@ namespace TortugaTeam.XamarinLauncher
 			return part.Replace("%", "%0").Replace("|", "%1").Replace(":", "%2");
 		}
 
-		private static Process RunXamarin(string path)
+		private static Process RunXamarin(string path, int line, string solution)
 		{
 			var xamarin = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Xamarin Studio\bin\XamarinStudio.exe");
 			if (!File.Exists(xamarin))
 			{				
 				return null;
 			}
+
+			string args = "--tortuga-team-file " + QuoteArgument(path) + " --tortuga-team-line " + line;
+			if (solution != null)
+			{
+				args += " --tortuga-team-solution " + QuoteArgument(solution);
+			}
 			var psi = new ProcessStartInfo(xamarin)
 			{
 				WorkingDirectory = Environment.CurrentDirectory,
-				Arguments = QuoteArgument(path)
+				Arguments = args
 			};
 			return Process.Start(psi);			
 		}

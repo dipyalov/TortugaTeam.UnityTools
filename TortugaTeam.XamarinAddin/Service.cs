@@ -324,15 +324,33 @@ namespace TortugaTeam.XamarinAddin
 						int.TryParse(lineStr, out line);
 					}						
 
-					IdeApp.OpenFiles(new[] {
-						new FileOpenInformation(
-							new FilePath(path),
-							null,
-							line,
-							0,
-							OpenDocumentOptions.TryToReuseViewer | OpenDocumentOptions.BringToFront | OpenDocumentOptions.CenterCaretLine
-						)
-					});
+					var files = new List<FileOpenInformation>();
+
+					string solution;
+					if (msg.TryGetValue("solution", out solution) && !string.IsNullOrWhiteSpace(solution))
+					{
+						var sol = IdeApp.ProjectOperations.CurrentSelectedSolution;
+						if (sol == null || !string.Equals(solution, sol.FileName, StringComparison.InvariantCultureIgnoreCase))
+						{
+							files.Add(new FileOpenInformation(
+								new FilePath(solution),
+								null,
+								0,
+								0,
+								OpenDocumentOptions.TryToReuseViewer | OpenDocumentOptions.BringToFront | OpenDocumentOptions.CenterCaretLine
+							));
+						}
+					}
+
+					files.Add(new FileOpenInformation(
+						new FilePath(path),
+						null,
+						line,
+						0,
+						OpenDocumentOptions.TryToReuseViewer | OpenDocumentOptions.BringToFront | OpenDocumentOptions.CenterCaretLine
+					));
+
+					IdeApp.OpenFiles(files.ToArray());
 				}
 				else
 				{
